@@ -1,0 +1,101 @@
+//inspired by tim rodenbroker exercise bauhaus 101
+//global variables
+int x1=100;
+
+//initial and only once
+void setup(){
+  //set canvas size
+  size(900,900);
+  hello();
+}
+
+//repeated forever
+void draw(){
+  //variable background
+  background(mouseX/2,mouseY/2,20,10);
+  //callback functions
+  bauhaus101();
+  functionX();
+  circle1();
+}
+
+//bauhaus101 sample
+void bauhaus101(){
+  //defining style
+  stroke(#f1f1f1);
+  strokeWeight(2);
+  noFill();
+  rectMode(CENTER);
+  //wave variable oscillates because of sine function
+  float wave= sin(frameCount*0.01)*450;
+  //apply wave variable to shapes cooridnates
+  ellipse(width/2+wave,height/2,700,700);
+  rect(width/2-wave,height/2,700,700);
+  //push and pop matrix help to override settings
+  pushMatrix();
+  translate(width/2,height/2);
+  //triangle coordinates
+  float x1=0;
+  float y1=-350;
+  //second point
+  float x2=350;
+  float y2=350;
+  //third point
+  float x3= -350;
+  float y3= 350;
+  //draws triangle
+  triangle(x1,y1,x2,y2,x3,y3);
+  //exit override
+  popMatrix();
+}
+
+//looping using sine and cosine functions
+void circle1(){
+  //red color
+  fill(#f00000);
+  //moving axis to center
+  translate(width/2,height/2);
+  //using sine and cosine
+  float wave1 = map(sin(radians(frameCount)),-1,1,-100,100);
+  float wave2 = map(cos(radians(frameCount)),-1,1,-100,100);
+  //drawing circle
+  ellipse(wave1,wave2,50,50);
+}
+
+//_____________
+
+void functionX(){
+    if (mousePressed){
+         loop1();
+          ellipse(200,200,300,300);
+    } else {
+         loop2();
+          ellipse(50,50,30,30);
+  }
+}
+
+
+void loop1(){
+  for(int i=mouseX; i<height/2;i++){
+     noFill();
+     stroke(0);
+     ellipse(mouseX,50,30,30);
+  }
+}
+
+//making grid using nested for loops
+void loop2(){
+  for(int x= 100; x<width; x=x+50){
+    for(int y= 100; y<height;y= y+50){
+      noStroke();
+      fill(120,130,140,50);
+      ellipse(x,y,20,20);
+      text("Exercise_01",20,30);
+    }
+  }
+}
+
+void hello(){
+  print("hello "+"processing " + width +" " + mouseX);
+
+}
