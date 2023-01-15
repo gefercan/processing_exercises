@@ -1,0 +1,123 @@
+//exercise03
+//interactive visual system by tim rodenbroker
+//general variable; change number to see the changes
+int amount=6;
+//multidimensional array, used to define variations
+int[][] state= new int[amount][amount];
+//color variable
+color fg=#10E09C;
+//create image containers
+PImage img1,img2,img3;
+//variable for mouse interaction
+int mx,my;
+
+//initialising function
+void setup(){
+ //canvas size
+  size(900,900);
+  //forloops
+    for (int x=0; x<amount; x++){
+      for (int y=0; y<amount;y++){
+        state[x][y]=int(random(0,6));
+      }
+    }
+    //load image sources
+    img1=loadImage("head1.png");
+    img1.resize(width,height);
+    img2=loadImage("head2.png");
+    img2.resize(width,height);
+    img3=loadImage("flower1.png");
+    img3.resize(width,height);
+}
+
+
+//rendering function
+void draw(){
+  //background color
+  background(#f1f1f1,mouseX/4,mouseY/2);
+  //place image
+  image(img3,0,0);
+  //coordinates that give input
+  float tileW = width/state.length;
+  float tileH=height/state.length;
+  fill(#ff0000);
+  noStroke();
+  ellipseMode(CORNER);
+  //check where the mouse is
+  mx= int(map(mouseX,0,width,0,amount));
+  my= int(map(mouseY,0,height,0, amount));
+  //draw the visual
+  //in the grid set array values
+     for (int x=0; x<amount; x++){
+       for (int y=0; y<amount;y++){
+        
+        //define variations according to input result
+        if(state[x][y]==0){
+          pushMatrix();
+          translate(x*tileW,y*tileH);
+          ellipse(0,0,tileW,tileH);
+          popMatrix();
+        }
+        else if(state[x][y]==1){
+          pushMatrix();
+          translate(x*tileW,y*tileH);
+          rect(0,0,tileW,tileH);
+          popMatrix();
+        }
+        else if(state[x][y]==2){
+          pushMatrix();
+          translate(x*tileW,y*tileH);
+          triangle(0,0,tileW,tileH,0,tileW);
+          popMatrix();
+        }
+        else if(state[x][y]==3){
+          //parameters of copy function
+          //source ccordinates
+          int sx=int(tileW*x);
+          int sy=int(tileH*y);
+          int sw=int(tileW);
+          int sh=int(tileH);
+          //destiny coordinates
+          int dx=sx;
+          int dy=sy;
+          int dw=sw;
+          int dh=sh;
+          //copy function with source defined
+          copy(img1,sx,sy,sw,sh,dx,dy,dw,dh);
+        }
+        else if(state[x][y]==4){
+          //source ccordinates
+          int sx=int(tileW*x);
+          int sy=int(tileH*y);
+          int sw=int(tileW);
+          int sh=int(tileH);
+          //destiny coordinates
+          int dx=sx;
+          int dy=sy;
+          int dw=sw;
+          int dh=sh;
+          //copy function with source defined
+          copy(img2,sx,sy,sw,sh,dx,dy,dw,dh);
+        }
+        else if(state[x][y]==5){
+        }
+       }
+     }
+   }
+
+//check the active variations
+void countUp(int x, int y){
+  if (state[x][y] < 5){
+    state[x][y]++;
+  } else {
+    state[x][y]=0;
+  }
+}
+
+void mouseReleased(){
+  //activate function on mouse event
+  countUp(mx,my);
+  //saves jpegs every click
+  //in a folder called out insde the sketch folder
+  saveFrame("out/visual####.jpeg");
+}
